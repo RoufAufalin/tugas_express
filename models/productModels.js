@@ -3,6 +3,20 @@ const path = require("path")
 const data = path.join(__dirname, "../data/data.json")
 const productsPath = path.join(__dirname, "../data/products.json")
 
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
+const ObjectID = Schema.ObjectID
+
+const ProductSchema = new Schema({
+  // id: ObjectID,
+  name: String,
+  description: String,
+  stock: Number,
+  price: Number,
+  image_url: String,
+  product_id: Number,
+})
+
 const productModel = {
   getAllProducts: async () => {
     const all_products = await fs.readFile(productsPath, "utf-8")
@@ -49,6 +63,8 @@ const productModel = {
 
     return updatedProduct
   },
-}
+};
 
-module.exports = productModel
+const Product = mongoose.model('Product', ProductSchema)
+
+module.exports = productModel, Product;

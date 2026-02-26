@@ -8,6 +8,8 @@ const indexRouter = require("./routes/index")
 const usersRouter = require("./routes/users")
 const productRouter = require("./routes/product")
 
+const db = require('./config/db_connection')
+
 const app = express()
 
 // view engine setup
