@@ -3,7 +3,10 @@ const Schema = mongoose.Schema
 
 const TodoSchema = new Schema(
   {
-    task: String,
+    task: {
+      type: String,
+      required: true,
+    },
     isCompleted: Boolean,
     createdAt: String,
     priority: String,
@@ -43,6 +46,7 @@ const todosModel = {
       return savedTodo
     } catch (err) {
       console.error("Gagal Menambah Data: ", err)
+      throw err
     }
   },
 
@@ -59,12 +63,15 @@ const todosModel = {
 
       if (!result) {
         console.log("Produk tidak ditemukan")
-        return
+        return null
       }
 
       console.log("Data berhasil diupdate:", result)
+      return result
     } catch (err) {
       console.error(err, "Ini eror")
+
+      throw err
     }
   },
 

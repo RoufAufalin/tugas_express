@@ -72,22 +72,22 @@ const productModel = {
       console.error(err)
     }
   },
-  deleteProduct: async (id) => {
-    try {
-      const product = await Product.findByIdAndDelete(id)
+  // deleteProduct: async (id) => {
+  //   try {
+  //     const product = await Product.findByIdAndDelete(id)
 
-      if (!product) {
-        console.log("Data not found")
-        return null
-      } else {
-        console.log("Data successfully deleted", product)
-        return product
-      }
-    } catch (err) {
-      console.log("Error: ", err)
-      throw err
-    }
-  },
+  //     if (!product) {
+  //       console.log("Data not found")
+  //       return null
+  //     } else {
+  //       console.log("Data successfully deleted", product)
+  //       return product
+  //     }
+  //   } catch (err) {
+  //     console.log("Error: ", err)
+  //     throw err
+  //   }
+  // },
 }
 
 module.exports = productModel
