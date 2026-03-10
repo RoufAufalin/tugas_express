@@ -2,14 +2,14 @@ const userModel = require("../models/usersModel")
 const createError = require("http-errors")
 
 const register = async (req, res, next) => {
-  const { username, password } = req.body
+  const { email, password } = req.body
 
   const data = {
-    username,
+    email,
     password,
   }
 
-  if (!username || !password) {
+  if (!email || !password) {
     return next(createError(400, "All fields are required"))
   }
 
@@ -24,14 +24,16 @@ const register = async (req, res, next) => {
 }
 
 const login = async (req, res, next) => {
-  const { username, password } = req.body
+  const { email, password } = req.body
+
+  console.log(`Ini adalah ${email} dan ${password}`)
 
   const data = {
-    username,
+    email,
     password,
   }
 
-  if (!username || !password) {
+  if (!email || !password) {
     return next(createError(400, "All fields are required"))
   }
 

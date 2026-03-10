@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 const TodoSchema = new Schema(
   {
+    userId: String,
     task: {
       type: String,
       required: true,
@@ -33,6 +34,17 @@ const todosModel = {
       return todo
     } catch (err) {
       console.log(err)
+    }
+  },
+
+  getTodosByUserId: async (userId) => {
+    try {
+      const todos = await Todo.find({ userId: userId })
+      console.log(todos)
+      return todos
+    } catch (err) {
+      console.error("Gagal mengambil data:", err)
+      throw err
     }
   },
 

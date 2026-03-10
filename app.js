@@ -1,3 +1,4 @@
+require("dotenv").config()
 const createError = require("http-errors")
 const express = require("express")
 const path = require("path")
@@ -8,6 +9,7 @@ const indexRouter = require("./routes/index")
 const usersRouter = require("./routes/users")
 const productRouter = require("./routes/product")
 const todoRouter = require("./routes/todos")
+const { authentication } = require("./middleware/auth")
 
 const db = require("./config/db_connection")
 
@@ -25,8 +27,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
 
-app.use("/", indexRouter)
 app.use("/users", usersRouter)
+
+app.use(authentication)
+
 // Product Route
 app.use("/product", productRouter)
 app.use("/todos", todoRouter)

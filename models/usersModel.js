@@ -5,7 +5,7 @@ const { generateToken } = require("../helper/token")
 
 const UserSchema = new Schema(
   {
-    username: {
+    email: {
       type: String,
       required: true,
     },
@@ -37,9 +37,9 @@ const usersModel = {
     }
   },
   login: async (userData) => {
-    const { username, password } = userData
+    const { email, password } = userData
     try {
-      const user = await User.findOne({ username })
+      const user = await User.findOne({ email })
       if (!user) {
         const err = new Error("User not found")
         err.status = 404
@@ -47,18 +47,17 @@ const usersModel = {
       }
 
       const isMatched = await comparePassword(password, user.password)
-      if (!isMatched) {
-        const err = new Error("Invalid username or password")
+      if (isMatched) {
+        const token = await generateToken({
+          id: user._id.toString(),
+          email: user.email,
+        })
+        return { id: user._id, email: user.email, token }
+      } else {
+        const err = new Error("Invalid email or password")
         err.status = 401
         throw err
       }
-
-      const token = await generateToken({ username })
-      const result =
-        typeof user.toObject === "function" ? user.toObject() : { ...user }
-      result.token = token
-      user.token = await generateToken({ username, password })
-      return result
     } catch (err) {
       console.error("Gagal Login: ", err)
       throw err

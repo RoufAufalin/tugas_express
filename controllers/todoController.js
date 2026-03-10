@@ -3,7 +3,7 @@ const createError = require("http-errors")
 
 const getAllTodos = async (req, res, next) => {
   try {
-    const todos = await todoModel.getAllTodos()
+    const todos = await todoModel.getTodosByUserId(req.userId)
     return res.status(200).json(todos)
   } catch (err) {
     return next(err)
@@ -21,10 +21,12 @@ const getTodoById = async (req, res) => {
 
 const addTodo = async (req, res, next) => {
   const { task, isCompleted, priority } = req.body
-  const data = { task, isCompleted, priority }
+
+  const userId = req.userId
+  const data = { task, isCompleted, priority, userId }
 
   // validate required fields; allow false for isCompleted
-  if (!task || typeof isCompleted === "undefined" || !priority) {
+  if (!task || typeof isCompleted === "undefined" || !priority || !userId) {
     return next(createError(400, "All fields are required"))
   }
 
@@ -51,6 +53,18 @@ const updateTodo = async (req, res, next) => {
   }
 
   try {
+    // Check if todo exists and belongs to current user
+    const todo = await todoModel.getTodoById(req.params.id)
+    if (!todo) {
+      return next(createError(404, "Todo tidak ditemukan"))
+    }
+
+    if (todo.userId !== req.userId) {
+      return next(
+        createError(403, "Anda tidak memiliki akses untuk mengupdate todo ini"),
+      )
+    }
+
     const updatedData = await todoModel.updateTodo(req.params.id, data)
 
     if (!updatedData) {
@@ -67,13 +81,25 @@ const updateTodo = async (req, res, next) => {
   }
 }
 
-const deleteTodo = async (req, res) => {
+const deleteTodo = async (req, res, next) => {
   const id = req.params.id
   try {
+    // Check if todo exists and belongs to current user
+    const todo = await todoModel.getTodoById(id)
+    if (!todo) {
+      return next(createError(404, "Todo tidak ditemukan"))
+    }
+
+    if (todo.userId !== req.userId) {
+      return next(
+        createError(403, "Anda tidak memiliki akses untuk menghapus todo ini"),
+      )
+    }
+
     const deletedTodo = await todoModel.deleteTodo(id)
 
     if (!deletedTodo) {
-      console.log(deleteTodo)
+      console.log(deletedTodo)
       return res.status(404).json({ error: "Todo tidak ditemukan" })
     }
 
