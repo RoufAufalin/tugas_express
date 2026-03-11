@@ -12,7 +12,6 @@ RUN npm ci --omit=dev
 
 # Copy the rest of your app's source code
 COPY . .
-
 # Your app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
 EXPOSE 3000
 
