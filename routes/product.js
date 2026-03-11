@@ -2,6 +2,8 @@ const express = require("express")
 const router = express.Router()
 const { authentication } = require("../middleware/auth")
 
+const coba = ""
+
 const controller = require("../controllers/controllers")
 
 router.get("/", controller.getAllProduct)
