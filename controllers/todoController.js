@@ -1,6 +1,8 @@
 const todoModel = require("../models/todosModel")
 const createError = require("http-errors")
 
+// JAVJF
+
 const getAllTodos = async (req, res, next) => {
   try {
     const todos = await todoModel.getTodosByUserId(req.userId)
