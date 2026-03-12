@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo 'Inject ENV...'
                 withCredentials([file(credentialsId: 'env-express', variable: 'ENVFILE')]){
-                    sh '''
+                    bat '''
                     rm -f .env
                     cp "$ENVFILE" .env
                     '''
@@ -28,14 +28,14 @@ pipeline {
             steps {
                 echo 'Building Docker...'
                 // For vanilla Express, this might be empty or used for transpiling (Babel/TS)
-                // sh 'npm run build'
-                sh 'docker compose build'
+                // bat 'npm run build'
+                bat 'docker compose build'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh '''
+                bat '''
                 docker compose down || true
                 docker compose up -d --build
                 docker ps
