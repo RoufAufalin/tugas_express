@@ -16,7 +16,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'env-express', variable: 'ENVFILE')]){
                     bat '''
                     if exist .env del .env
-                    copy "$ENVFILE" .env
+                    copy "%ENVFILE%" .env
                     '''
                 }
 
