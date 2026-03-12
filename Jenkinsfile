@@ -5,7 +5,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 echo 'Clone Github Repository...'
-                git url: 'https://github.com/RoufAufalin/tugas_express.git'
+                git url: 'https://github.com/RoufAufalin/tugas_express.git',
                 branch: 'main'
             }
         }
