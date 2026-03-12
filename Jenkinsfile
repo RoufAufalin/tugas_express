@@ -15,8 +15,8 @@ pipeline {
                 echo 'Inject ENV...'
                 withCredentials([file(credentialsId: 'env-express', variable: 'ENVFILE')]){
                     bat '''
-                    rm -f .env
-                    cp "$ENVFILE" .env
+                    if exist .env del .env
+                    copy "$ENVFILE" .env
                     '''
                 }
 
